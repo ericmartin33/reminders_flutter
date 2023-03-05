@@ -4,6 +4,7 @@ import 'package:reminder_app/screens/home/widgets/list_view_items.dart';
 
 import '../../models/category/category_collection.dart';
 
+import '../../models/todo_list/todo_list.dart';
 import 'widgets/footer.dart';
 import 'widgets/grid_view_items.dart';
 
@@ -16,8 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String layoutType = 'grid';
-
   CategoryCollection categoryCollection = CategoryCollection();
+  List<TodoList> todoList = [];
+
+  addNewList(TodoList list) {
+    setState(() {
+      todoList.add(list);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Text(
               layoutType == 'grid' ? 'Edit' : 'Done',
-              //style: const TextStyle(color: Colors.white),
             ),
           )
         ],
@@ -58,7 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ListViewItems(categoryCollection: categoryCollection),
             ),
           ),
-          const Footer()
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: todoList.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Text(todoList[index].title),
+              );
+            },
+          ),
+          Footer(addNewListCallback: addNewList)
         ],
       ),
     );

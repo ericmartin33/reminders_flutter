@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder_app/models/common/custom_color.dart';
 import 'package:reminder_app/models/common/custom_color_collection.dart';
 import 'package:reminder_app/models/common/custom_icon_collection.dart';
+import 'package:reminder_app/models/todo_list/todo_list.dart';
 
 import '../../models/common/custom_icon.dart';
 
@@ -45,8 +46,18 @@ class _AddListScreenState extends State<AddListScreen> {
             onPressed: _listName.isEmpty
                 ? null
                 : () {
-                    if (_listName.isNotEmpty) {
-                      print('add to database');
+                    if (_textController.text.isNotEmpty) {
+                      Navigator.pop(
+                        context,
+                        TodoList(
+                          id: '1',
+                          title: _textController.text,
+                          icon: {
+                            "icon": _selectedIcon.id,
+                            "color": _selectedColor.id
+                          },
+                        ),
+                      );
                     } else {
                       print('no text');
                     }
