@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reminder_app/screens/add_list/add_list_screen.dart';
+import 'package:reminder_app/screens/add_reminder/add_reminder_screen.dart';
 
 import 'screens/home/home_screen.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
-        '/addList': (context) => const AddListScreen()
+        '/addList': (context) => const AddListScreen(),
+        '/addReminder': (context) => const AddReminderScreen(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.black,
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        dividerColor: Colors.grey[600],
       ),
     );
   }

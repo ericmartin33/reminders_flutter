@@ -17,6 +17,7 @@ class _AddListScreenState extends State<AddListScreen> {
   CustomIcon _selectedIcon = CustomIconCollection().icons.first;
   final TextEditingController _textController = TextEditingController();
   String _listName = '';
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +26,12 @@ class _AddListScreenState extends State<AddListScreen> {
         _listName = _textController.text;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textController.dispose();
   }
 
   @override
