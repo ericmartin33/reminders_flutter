@@ -9,6 +9,34 @@ class AddReminderScreen extends StatefulWidget {
 }
 
 class _AddReminderScreenState extends State<AddReminderScreen> {
+  final TextEditingController _notesTextController = TextEditingController();
+  final TextEditingController _titleTextController = TextEditingController();
+  String _title = '';
+  String _notes = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    _titleTextController.addListener(() {
+      setState(() {
+        _title = _titleTextController.text;
+      });
+    });
+    _notesTextController.addListener(() {
+      setState(() {
+        _notes = _notesTextController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleTextController.dispose();
+    _notesTextController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +44,11 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
         title: const Text('New Reminder'),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: _title.isEmpty
+                ? null
+                : () {
+                    print('add to database');
+                  },
             child: const Text(
               'Add',
             ),
@@ -33,18 +65,22 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   borderRadius: BorderRadius.circular(10.0),
                   color: Theme.of(context).cardColor),
               child: Column(
-                children: const [
+                children: [
                   TextField(
-                    decoration: InputDecoration(
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: _titleTextController,
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'Title'),
                   ),
-                  Divider(
+                  const Divider(
                     height: 1,
                   ),
                   SizedBox(
                     height: 100,
                     child: TextField(
-                      decoration: InputDecoration(
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: _notesTextController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Notes',
                       ),
