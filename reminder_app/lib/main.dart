@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/models/todo_list/todo_list_collection.dart';
@@ -8,13 +9,52 @@ import 'screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _initialized = false;
+  bool _error = false;
+
+  initializeFirebase() async {
+    try {
+      await Firebase.initializeApp();
+
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFirebase();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_error) {
+      return const Center(
+        child: Text('Une erreur de connection a eu lieu'),
+      );
+    }
+
+    if (!_initialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return ChangeNotifierProvider<TodoListCollection>(
       create: (BuildContext context) => TodoListCollection(),
       child: MaterialApp(
