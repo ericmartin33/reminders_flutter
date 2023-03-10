@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reminder_app/screens/auth/authenticate_screen.dart';
 
 import 'package:reminder_app/screens/home/widgets/list_view_items.dart';
 
@@ -25,6 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Reminders'),
         actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              icon: const Icon(Icons.logout)),
           TextButton(
             onPressed: () {
               if (layoutType == 'grid') {
@@ -58,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   secondChild:
                       ListViewItems(categoryCollection: categoryCollection),
                 ),
-                TodoLists(),
+                const TodoLists(),
               ],
             ),
           ),
