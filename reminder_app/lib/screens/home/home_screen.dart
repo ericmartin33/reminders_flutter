@@ -45,17 +45,22 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          AnimatedCrossFade(
-            duration: const Duration(milliseconds: 300),
-            crossFadeState: layoutType == 'grid'
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            firstChild: GridViewItems(
-                categories: categoryCollection.selectedCategories),
-            secondChild: ListViewItems(categoryCollection: categoryCollection),
-          ),
-          const Expanded(
-            child: TodoLists(),
+          Expanded(
+            child: ListView(
+              children: [
+                AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 300),
+                  crossFadeState: layoutType == 'grid'
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  firstChild: GridViewItems(
+                      categories: categoryCollection.selectedCategories),
+                  secondChild:
+                      ListViewItems(categoryCollection: categoryCollection),
+                ),
+                TodoLists(),
+              ],
+            ),
           ),
           const Footer()
         ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reminder_app/models/todo_list/todo_list.dart';
 import 'package:reminder_app/screens/add_list/add_list_screen.dart';
 import 'package:reminder_app/screens/add_reminder/add_reminder_screen.dart';
 

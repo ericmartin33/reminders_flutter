@@ -14,6 +14,7 @@ class GridViewItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GridView.count(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         childAspectRatio: 16 / 9,
         crossAxisCount: 2,

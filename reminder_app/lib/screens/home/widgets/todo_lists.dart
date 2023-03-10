@@ -31,6 +31,7 @@ class TodoLists extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               itemCount: todoLists.length,
