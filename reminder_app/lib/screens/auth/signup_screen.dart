@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:reminder_app/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key, required this.toggleView});
@@ -38,15 +39,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(children: [
-          Lottie.asset('assets/images/home_icon.json', width: 175),
-          Text(
-            'Une appli quelle est belle',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Form(
+        child: Column(
+          children: [
+            Lottie.asset('assets/images/home_icon.json', width: 175),
+            Text(
+              'Une appli quelle est belle',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,16 +74,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            print('submit form');
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          final user = await AuthService()
+                              .createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text);
+
+                          if (user != null) {
+                            print(user);
                           }
-                        },
-                        child: const Text('Sign Up'))
+                        }
+                      },
+                      child: const Text('Sign Up'),
+                    )
                   ],
-                )),
-          ),
-        ]),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
