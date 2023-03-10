@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:reminder_app/models/todo_list/todo_list_collection.dart';
 import 'package:reminder_app/screens/add_list/add_list_screen.dart';
 import 'package:reminder_app/screens/add_reminder/add_reminder_screen.dart';
+import 'package:reminder_app/screens/auth/authenticate_screen.dart';
 
 import 'screens/home/home_screen.dart';
 
@@ -40,7 +41,8 @@ class _MyAppState extends State<MyApp> {
               title: 'Reminders',
               initialRoute: '/',
               routes: {
-                '/': (context) => const HomeScreen(),
+                '/': (context) => const AuthenticateScreen(),
+                '/home': (context) => const HomeScreen(),
                 '/addList': (context) => const AddListScreen(),
                 '/addReminder': (context) => const AddReminderScreen(),
               },
