@@ -20,69 +20,54 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _initialized = false;
-  bool _error = false;
-
-  initializeFirebase() async {
-    try {
-      await Firebase.initializeApp();
-
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initializeFirebase();
-  }
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    if (_error) {
-      return const Center(
-        child: Text('Une erreur de connection a eu lieu'),
-      );
-    }
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Une erreur est survenue !'),
+          );
+        }
 
-    if (!_initialized) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return ChangeNotifierProvider<TodoListCollection>(
-      create: (BuildContext context) => TodoListCollection(),
-      child: MaterialApp(
-        title: 'Reminders',
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const HomeScreen(),
-          '/addList': (context) => const AddListScreen(),
-          '/addReminder': (context) => const AddReminderScreen(),
-        },
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.black,
-          appBarTheme: const AppBarTheme(color: Colors.black),
-          brightness: Brightness.dark,
-          iconTheme: const IconThemeData(color: Colors.white),
-          accentColor: Colors.white,
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.blueAccent,
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ChangeNotifierProvider<TodoListCollection>(
+            create: (BuildContext context) => TodoListCollection(),
+            child: MaterialApp(
+              title: 'Reminders',
+              initialRoute: '/',
+              routes: {
+                '/': (context) => const HomeScreen(),
+                '/addList': (context) => const AddListScreen(),
+                '/addReminder': (context) => const AddReminderScreen(),
+              },
+              theme: ThemeData(
+                scaffoldBackgroundColor: Colors.black,
+                appBarTheme: const AppBarTheme(color: Colors.black),
+                brightness: Brightness.dark,
+                iconTheme: const IconThemeData(color: Colors.white),
+                accentColor: Colors.white,
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blueAccent,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                dividerColor: Colors.grey[600],
               ),
             ),
-          ),
-          dividerColor: Colors.grey[600],
-        ),
-      ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
