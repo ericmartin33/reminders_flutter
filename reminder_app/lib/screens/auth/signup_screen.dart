@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key, required this.toggleView});
@@ -38,9 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(children: [
-          const SizedBox(
-            height: 200,
-          ),
+          Lottie.asset('assets/images/home_icon.json', width: 175),
           Text(
             'Une appli quelle est belle',
             style: Theme.of(context).textTheme.headlineSmall,
@@ -50,6 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 20),
                     TextFormField(

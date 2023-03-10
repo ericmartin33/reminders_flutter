@@ -61,6 +61,11 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                  ),
+                ),
                 dividerColor: Colors.grey[600],
               ),
             ),
