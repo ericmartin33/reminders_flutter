@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder_app/models/common/custom_color.dart';
 import 'package:reminder_app/models/common/custom_color_collection.dart';
 import 'package:reminder_app/models/common/custom_icon_collection.dart';
 import 'package:reminder_app/models/todo_list/todo_list.dart';
+import 'package:reminder_app/models/todo_list/todo_list_collection.dart';
 
 import '../../models/common/custom_icon.dart';
 
@@ -47,16 +49,17 @@ class _AddListScreenState extends State<AddListScreen> {
                 ? null
                 : () {
                     if (_textController.text.isNotEmpty) {
+                      Provider.of<TodoListCollection>(context, listen: false)
+                          .addTodoList(TodoList(
+                        id: DateTime.now().toIso8601String(),
+                        title: _textController.text,
+                        icon: {
+                          "id": _selectedIcon.id,
+                          "color": _selectedColor.id
+                        },
+                      ));
                       Navigator.pop(
                         context,
-                        TodoList(
-                          id: '1',
-                          title: _textController.text,
-                          icon: {
-                            "icon": _selectedIcon.id,
-                            "color": _selectedColor.id
-                          },
-                        ),
                       );
                     } else {
                       print('no text');

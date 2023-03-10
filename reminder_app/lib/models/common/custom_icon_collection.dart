@@ -17,7 +17,7 @@ class CustomIconCollection {
   UnmodifiableListView<CustomIcon> get icons =>
       UnmodifiableListView<CustomIcon>(_icons);
 
-  CustomIcon findColorById(id) {
+  CustomIcon findIconById(id) {
     return _icons.firstWhere((element) => element.id == id);
   }
 }
