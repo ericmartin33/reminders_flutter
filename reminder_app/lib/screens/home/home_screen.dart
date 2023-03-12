@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reminder_app/screens/auth/authenticate_screen.dart';
 
 import 'package:reminder_app/screens/home/widgets/list_view_items.dart';
 

@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder_app/models/todo_list/todo_list.dart';
 
-import '../models/todo_list/todo_list_collection.dart';
 import 'add_list/add_list_screen.dart';
 import 'add_reminder/add_reminder_screen.dart';
 import 'auth/authenticate_screen.dart';
@@ -16,14 +17,27 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
+    final todoListStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .collection('todo_lists')
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (todoListSnapSnapShot) => TodoList.fromJson(
+                  todoListSnapSnapShot.data(),
+                ),
+              )
+              .toList(),
+        );
 
-    return ChangeNotifierProvider<TodoListCollection>(
-      create: (BuildContext context) => TodoListCollection(),
+    return StreamProvider<List<TodoList>>.value(
+      initialData: [],
+      value: todoListStream,
       child: MaterialApp(
         title: 'Reminders',
-        // initialRoute: '/',
         routes: {
-          // '/': (context) => const AuthenticateScreen(),
           '/home': (context) => const HomeScreen(),
           '/addList': (context) => const AddListScreen(),
           '/addReminder': (context) => const AddReminderScreen(),
