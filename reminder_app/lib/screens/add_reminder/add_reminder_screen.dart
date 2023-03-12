@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder_app/common/widgets/category_icon.dart';
+import 'package:reminder_app/screens/add_reminder/select_reminder_list_screen.dart';
+
+import '../../models/todo_list/todo_list.dart';
 
 class AddReminderScreen extends StatefulWidget {
   const AddReminderScreen({super.key});
@@ -13,7 +17,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   final TextEditingController _titleTextController = TextEditingController();
   String _title = '';
   String _notes = '';
-
+  TodoList? selectedList;
   @override
   void initState() {
     super.initState();
@@ -37,8 +41,16 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     _notesTextController.dispose();
   }
 
+  updateSelectedList(TodoList todoList) {
+    setState(() {
+      selectedList = todoList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<TodoList> todoLists = Provider.of<List<TodoList>>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Reminder'),
@@ -100,7 +112,18 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                 elevation: 0,
                 child: ListTile(
                   tileColor: Theme.of(context).cardColor,
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectReminderListScreen(
+                            todoLists: todoLists,
+                            selectListCallback: updateSelectedList,
+                            selectedTodoList: selectedList ?? todoLists.first),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
                   leading: Text(
                     'List',
                     style: Theme.of(context).textTheme.headlineSmall,
@@ -112,7 +135,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           backgroundColor: Colors.blueAccent,
                           iconData: Icons.calendar_today),
                       const SizedBox(width: 10),
-                      const Text('New List'),
+                      Text(selectedList != null
+                          ? selectedList!.title
+                          : todoLists.first.title),
                       const Icon(Icons.arrow_forward)
                     ],
                   ),
@@ -142,7 +167,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           backgroundColor: Colors.blueAccent,
                           iconData: Icons.calendar_today),
                       const SizedBox(width: 10),
-                      const Text('Sheduled'),
+                      Text('Select Category'),
                       const Icon(Icons.arrow_forward)
                     ],
                   ),
